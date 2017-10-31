@@ -16,7 +16,7 @@ var MongoStore = require('connect-mongo')(session);
 var app = express();
 
 app.locals.pretty = true;
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 8080);
 app.set('views', __dirname + '/app/server/views');
 app.set('view engine', 'jade');
 app.use(cookieParser());
@@ -27,13 +27,14 @@ app.use(express.static(__dirname + '/app/public'));
 
 // build mongo database connection url //
 
-var dbHost = process.env.DB_HOST || 'localhost'
+/*var dbHost = process.env.DB_HOST || 'localhost'
 var dbPort = process.env.DB_PORT || 27017;
 var dbName = process.env.DB_NAME || 'node-login';
 
-var dbURL = 'mongodb://'+dbHost+':'+dbPort+'/'+dbName;
+var dbURL = 'mongodb://'+dbHost+':'+dbPort+'/'+dbName;*/
+var dbURL = 'mongodb://appdbo:MiTSBWUinz7Dy40Dud5zaTzrxHGkoYHCxuSD4975QryN3wsiahhpHknGKdRVzwWt6i0WeitkPEtiLO5c1JwXcQ==@appdbo.documents.azure.com:10255/?ssl=true';
 if (app.get('env') == 'live'){
-// prepend url with authentication credentials // 
+// prepend url with authentication credentials //
 	dbURL = 'mongodb://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+dbHost+':'+dbPort+'/'+dbName;
 }
 
@@ -48,6 +49,13 @@ app.use(session({
 
 require('./app/server/routes')(app);
 
-http.createServer(app).listen(app.get('port'), function(){
+const PORT = 8080;
+const HOST = '0.0.0.0';
+app.listen(PORT, HOST);
+console.log("test");
+
+
+/*http.createServer(app).listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
-});
+  console.log('server is running');
+});*/
