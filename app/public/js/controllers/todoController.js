@@ -46,6 +46,7 @@ var bogoTodo = angular.module('bogoTodo', []);
 
 function mainController($scope, $http) {
     $scope.formData = {};
+    $scope.update = "";
 
     // when landing on the page, get all todos and show them
     $http.get('/api/todos')
