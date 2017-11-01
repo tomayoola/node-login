@@ -25,7 +25,17 @@
 <body ng-controller="mainController">
 
 <div class="container">
-  <button id="sign-out">Sign out</button>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <button id="sign-out" type="button" class="btn btn-default navbar-btn">Sign out</button>
+                </a>
+            </div>
+        </div>
+    </nav>
+
     <!-- HEADER AND TODO COUNT -->
     <div class="jumbotron text-center">
         <h1>My Todo List <span class="label label-info">{{ todos.length }}</span></h1>
