@@ -202,14 +202,32 @@ module.exports = function(app) {
 
     // delete a todo
     app.post('/api/update/:todo_id/:rtext', function(req, res){
-      let todo_id = req.params.todo_id;
+      let todo_id = req.params.todo_id.trim();
       let rtext = req.params.rtext;
       console.log("updating");
       console.log(todo_id);
 
-    Todo.findById(todo_id, function(error, todo1){
+      Todo.findById(todo_id, function(err, todo){
+        console.log(err);
+        console.log(todo);
+        console.log(todo.text);
+        todo.text = rtext;
+
+        todo.save(function(err, todo){
+          if (err) {
+            res.status(500).send(err);
+          }
+          res.status(200).send(todo);
+        });
+
       });
 
+      //db.mycol.update({'title':'MongoDB Overview'},{$set:{'title':'New MongoDB Tutorial'}});
+      //Todo.update({'_id:':todo_id},{$set:{'text':rtext}});
+
+      Todo.find(function(err, todos){
+      //  console.log(todos);
+      });
 
     });
 
