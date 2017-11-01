@@ -23,8 +23,9 @@
 </head>
 <!-- SET THE CONTROLLER AND GET ALL TODOS -->
 <body ng-controller="mainController">
-<div class="container">
 
+<div class="container">
+  <button id="sign-out">Sign out</button>
     <!-- HEADER AND TODO COUNT -->
     <div class="jumbotron text-center">
         <h1>My Todo List <span class="label label-info">{{ todos.length }}</span></h1>
@@ -61,6 +62,16 @@
     </div>
 
 </div>
-
+<script>
+  $('#sign-out').click(function(){
+    $.ajax({
+			url: "/logout",
+			type: "POST",
+			success: function(data){
+        window.location.href = '/';
+      }
+		});
+  });
+</script>
 </body>
 </html>
