@@ -166,16 +166,13 @@ $('#account-details').click(function(){
       new_text = $('#todo-textbox').val();
       $todo.find('.todo-text').html(new_text);
 
-      let tId = $todo.find('.todo-id');
+      let tId = $todo.find('#todo-id').html();
+      console.log(tId);
 
       $('#todo-textbox').remove();
-      $.post('/api/todos', "e")
-          .success(function(data) {
-              console.log(data);
-          })
-          .error(function(data) {
-              console.log('Error: ' + data);
-          });
+
+      $.post( "/api/update/"+tId+"/"+new_text, [new_text, tId]);
+
 
       console.log($todo.find('#todo-submit'));
 

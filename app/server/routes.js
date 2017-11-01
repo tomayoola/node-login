@@ -201,6 +201,18 @@ module.exports = function(app) {
     });
 
     // delete a todo
+    app.post('/api/update/:todo_id/:rtext', function(req, res){
+      let todo_id = req.params.todo_id;
+      let rtext = req.params.rtext;
+      console.log("updating");
+      console.log(todo_id);
+
+    Todo.findById(todo_id, function(error, todo1){
+      });
+
+
+    });
+
     app.delete('/api/todos/:todo_id', function(req, res) {
       let username = req.session.user.user;
         Todo.remove({
