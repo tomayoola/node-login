@@ -36,17 +36,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Brand</a>
+                <button id="account-details" type="button" class="btn btn-default navbar-btn">Sign out</button>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">Link</a></li>
+                    <li><button id="accountdetails" type="button" class="btn btn-default navbar-btn">Sut</button></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><button id="sign-out" type="button" class="btn btn-default navbar-btn">Sign out</button></li>
+                    <li><button id="sign-out" type="button" class="btn btn-default navbar-btn">Sig t</button></li>
                 </ul>
             </div>
         </div>
@@ -54,7 +54,7 @@
 
     <!-- HEADE AND TODO COUNT -->
     <div class="jumbotron text-center">
-        <h1>My Todo List <span class="label label-info">{{ todos.length }}</span></h1>
+        <h1>My Todo ist <span class="label label-info">{{ todos.length }}</span></h1>
     </div>
 
     <!-- TODO LIST -->
@@ -116,6 +116,16 @@ var new_text = "";
       }
 		});
   });
+
+$('#account-details').click(function(){
+    $.ajax({
+        url: "/home",
+        type: "POST",
+        success: function(data){
+            window.location.href = '/';
+        }
+    });
+});
 
   $('body').on('click', '.todo-edit', function() {
     let $this = $(this);
