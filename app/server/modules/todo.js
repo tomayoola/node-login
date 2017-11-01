@@ -6,5 +6,6 @@ var mongoose = require ('mongoose');
 module.exports = mongoose.model('Todo', {
     text : String,
     user: String,
+    date_created: Date,
     done : Boolean
 });

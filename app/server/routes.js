@@ -183,6 +183,7 @@ module.exports = function(app) {
         Todo.create({
             text : req.body.text,
             user : username,
+            date_created : Date.now(),
             done : false
         }, function(err, todo) {
             if (err)
