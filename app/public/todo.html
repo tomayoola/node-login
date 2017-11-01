@@ -8,7 +8,7 @@
     <title>Node/Angular Todo App</title>
 
     <!-- SCROLLS -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" /><!-- load bootstrap -->
     <style>
         html                    { overflow-y:scroll; }
         body                    { padding-top:50px; }
@@ -43,14 +43,27 @@
 
     <!-- TODO LIST -->
     <div id="todo-list" class="row">
-        <div class="col-sm-4 col-sm-offset-4">
+        <div class="col-sm-8 col-sm-offset-2 text-center">
 
             <!-- LOOP OVER THE TODOS IN $scope.todos -->
-            <div class="todo-item" ng-repeat="todo in todos">
-              {{ todo.text }}
-              <span class="todo-tags"> {{ todo.tags }} </span>
-              <button class="todo-edit">Edit</button>
-              <button class="todo-delete" ng-click="deleteTodo(todo._id)">Delete</button>
+            <div class="list-group">
+                <div class="todo-item" ng-repeat="todo in todos">
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <a class="list-group-item clearfix">
+                            {{ todo.text }}
+                            <span class="pull-right">
+                            <span class="btn btn-xs btn-default">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                            </span>
+                        </span>
+                            <span class="pull-right">
+                            <span class="btn btn-xs btn-default" class="todo-delete" ng-click="deleteTodo(todo._id)">
+                                <span class="todo-delete glyphicon glyphicon-trash " aria-hidden="true"></span>
+                            </span>
+                        </span>
+                        </a>
+                    </div>
+                </div>
             </div>
 
         </div>
