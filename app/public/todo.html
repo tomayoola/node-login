@@ -48,6 +48,7 @@
             <!-- LOOP OVER THE TODOS IN $scope.todos -->
             <div class="todo-item" ng-repeat="todo in todos">
               {{ todo.text }}
+              <span class="todo-tags"> {{ todo.tags }} </span>
               <button class="todo-edit">Edit</button>
               <button class="todo-delete" ng-click="deleteTodo(todo._id)">Delete</button>
             </div>
