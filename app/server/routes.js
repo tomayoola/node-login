@@ -169,7 +169,7 @@ module.exports = function(app) {
 
             // if there is an error retrieving, send the error. nothing after res.send(err) will execute
             if (err)
-                res.send(err)
+                res.send(err);
             let results = todos.filter((todo) => todo.user === username);
             res.json(results); // return all todos in JSON format
         });
@@ -242,7 +242,7 @@ module.exports = function(app) {
             // get and return all the todos after you create another
             Todo.find(function(err, todos) {
                 if (err)
-                    res.send(err)
+                    res.send(err);
                 let results = todos.filter((todo) => todo.user === username);
                 res.json(results);
             });
