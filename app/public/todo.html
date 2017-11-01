@@ -50,15 +50,15 @@
                 <div class="todo-item" ng-repeat="todo in todos">
                     <div class="list-group-item d-flex justify-content-between align-items-center">
                         <a class="list-group-item clearfix">
-                            {{ todo.text }}
+                          <span class="todo-text">{{ todo.text }}</span>
                             <span class="pull-right">
-                            <span class="btn btn-xs btn-default">
-                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                            <span class="todo-edit btn btn-xs btn-default">
+                                <span class="button1 glyphicon glyphicon-cog" aria-hidden="true"></span>
                             </span>
                         </span>
                             <span class="pull-right">
-                            <span class="btn btn-xs btn-default" class="todo-delete" ng-click="deleteTodo(todo._id)">
-                                <span class="todo-delete glyphicon glyphicon-trash " aria-hidden="true"></span>
+                            <span class="todo-delete btn btn-xs btn-default" ng-click="deleteTodo(todo._id)">
+                                <span class="button2 glyphicon glyphicon-trash " aria-hidden="true"></span>
                             </span>
                         </span>
                         </a>
@@ -87,6 +87,8 @@
 
 </div>
 <script>
+var old_text = "";
+var new_text = "";
   $('#sign-out').click(function(){
     $.ajax({
 			url: "/logout",
@@ -95,6 +97,50 @@
         window.location.href = '/';
       }
 		});
+  });
+
+  $('body').on('click', '.todo-edit', function() {
+    let $this = $(this);
+    let $todo = $this.parent().parent().parent().parent();
+    let $child = $this.children(':first');
+    if ($child.hasClass('glyphicon-cog')){
+      //start editting
+      $('.todo-cancel').trigger('click');
+      $child.removeClass('glyphicon-cog');
+      $child.addClass('glyphicon-ok');
+      $todo.find('.todo-delete').parent().append(`<span class="todo-cancel btn btn-xs btn-default">
+          <span class="button2 glyphicon glyphicon-remove " aria-hidden="true"></span>
+      </span>`);
+      $('.todo-cancel').on('click', function(){
+        $child.removeClass('glyphicon-ok');
+        $child.addClass('glyphicon-cog');
+        $todo.find('.todo-cancel').remove();
+        $todo.find('.todo-delete').show();
+        new_text = $('#todo-textbox').val();
+        $('#todo-textbox').remove();
+        $todo.find('.todo-text').html(old_text);
+      });
+
+      $todo.find('.todo-delete').hide();
+
+      old_text = $todo.find('.todo-text').html();
+      $todo.find('.todo-text').html('');
+      $todo.find('.todo-text').parent().append('<input id="todo-textbox" type="text"/>');
+      $('#todo-textbox').val(old_text);
+
+
+    } else {
+      //stop editting
+      $child.removeClass('glyphicon-ok');
+      $child.addClass('glyphicon-cog');
+      $todo.find('.todo-cancel').remove();
+      $todo.find('.todo-delete').show();
+      new_text = $('#todo-textbox').val();
+      $('#todo-textbox').remove();
+      $todo.find('.todo-text').html(new_text);
+
+
+    }
   });
 </script>
 </body>
