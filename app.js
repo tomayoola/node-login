@@ -9,18 +9,22 @@ var http = require('http');
 var express = require('express');
 var session = require('express-session');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var morgan   = require('morgan');
 var errorHandler = require('errorhandler');
 var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')(session);
+var methodOverride = require('method-override');
 
 var app = express();
 
 app.locals.pretty = true;
-app.set('port', process.env.PORT || 8080); //3000 not docker 8080 docker
+app.set('port', process.env.PORT || 3000); //3000 not docker 8080 docker
 app.set('views', __dirname + '/app/server/views');
 app.set('view engine', 'jade');
 app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(require('stylus').middleware({ src: __dirname + '/app/public' }));
 app.use(express.static(__dirname + '/app/public'));
@@ -38,6 +42,8 @@ if (app.get('env') == 'live'){
 	dbURL = 'mongodb://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+dbHost+':'+dbPort+'/'+dbName;
 }
 
+mongoose.connect(dbURL);
+
 app.use(session({
 	secret: 'faeb4453e5d14fe6f6d04637f78077c76c73d1b4',
 	proxy: true,
@@ -49,13 +55,13 @@ app.use(session({
 
 require('./app/server/routes')(app);
 
-const PORT = 8080;
+/*const PORT = 8080;
 const HOST = '0.0.0.0';
 app.listen(PORT, HOST);
-console.log("test");
+console.log("test");*/
 
 
-/*http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
   console.log('server is running');
-});*/
+});

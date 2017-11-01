@@ -2,6 +2,7 @@
 var CT = require('./modules/country-list');
 var AM = require('./modules/account-manager');
 var EM = require('./modules/email-dispatcher');
+var Todo = require('./modules/todo');
 
 module.exports = function(app) {
 
@@ -115,7 +116,7 @@ module.exports = function(app) {
 			if (o){
 				EM.dispatchResetPasswordLink(o, function(e, m){
 				// this callback takes a moment to return //
-				// TODO add an ajax loader to give user feedback //
+				// TOD add an ajax loader to give user feedback //
 					if (!e){
 						res.status(200).send('ok');
 					}	else{
@@ -147,7 +148,7 @@ module.exports = function(app) {
 		var nPass = req.body['pass'];
 	// retrieve the user's email from the session to lookup their account and reset password //
 		var email = req.session.reset.email;
-	// destory the session immediately after retrieving the stored email //
+	// destroy the session immediately after retrieving the stored email //
 		req.session.destroy();
 		AM.updatePassword(email, nPass, function(e, o){
 			if (o){
@@ -157,6 +158,59 @@ module.exports = function(app) {
 			}
 		})
 	});
+
+// To-do list
+
+    app.get('/api/todos', function(req, res) {
+
+        // use mongoose to get all todos in the database
+        Todo.find(function(err, todos) {
+
+            // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+            if (err)
+                res.send(err)
+
+            res.json(todos); // return all todos in JSON format
+        });
+    });
+
+    // create todo and send back all todos after creation
+    app.post('/api/todos', function(req, res) {
+
+        // create a todo, information comes from AJAX request from Angular
+        Todo.create({
+            text : req.body.text,
+            done : false
+        }, function(err, todo) {
+            if (err)
+                res.send(err);
+
+            // get and return all the todos after you create another
+            Todo.find(function(err, todos) {
+                if (err)
+                    res.send(err)
+                res.json(todos);
+            });
+        });
+
+    });
+
+    // delete a todo
+    app.delete('/api/todos/:todo_id', function(req, res) {
+        Todo.remove({
+            _id : req.params.todo_id
+        }, function(err, todo) {
+            if (err)
+                res.send(err);
+
+            // get and return all the todos after you create another
+            Todo.find(function(err, todos) {
+                if (err)
+                    res.send(err)
+                res.json(todos);
+            });
+        });
+    });
 	
 // view & delete accounts //
 	
