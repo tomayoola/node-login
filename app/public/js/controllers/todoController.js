@@ -51,12 +51,7 @@ function mainController($scope, $http) {
     // when landing on the page, get all todos and show them
     $http.get('/api/todos')
         .success(function(data) {
-          if ($scope.formData.filterTags) {
-            $scope.todos = filterByTags(data);
-          } else {
-            $scope.todos = data;
-          }
-            console.log(data);
+          $scope.todos = filterTodos(data);
         })
         .error(function(data) {
             console.log('Error: ' + data);
@@ -71,12 +66,7 @@ function mainController($scope, $http) {
             .success(function(data) {
                 $scope.formData.text = ""; // clear the form so our user is ready to enter another
                 $scope.formData.tags = "";
-                if ($scope.formData.filterTags) {
-                  $scope.todos = filterByTags(data);
-                } else {
-                  $scope.todos = data;
-                }
-                console.log(data);
+                $scope.todos = filterTodos(data);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
@@ -87,12 +77,7 @@ function mainController($scope, $http) {
     $scope.deleteTodo = function(id) {
         $http.delete('/api/todos/' + id)
             .success(function(data) {
-              if ($scope.formData.filterTags) {
-                $scope.todos = filterByTags(data);
-              } else {
-                $scope.todos = data;
-              }
-                console.log(data);
+              $scope.todos = filterTodos(data);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
@@ -100,20 +85,36 @@ function mainController($scope, $http) {
     };
 
     $scope.$watch('formData.filterTags',function(){
-      console.log("changed");
+      refreshTodos();
+    });
+
+    $scope.$watch('formData.filterText',function(){
+      refreshTodos();
+    });
+
+    function refreshTodos(){
       $http.get('/api/todos')
           .success(function(data) {
-            if ($scope.formData.filterTags) {
-              $scope.todos = filterByTags(data);
-            } else {
-              $scope.todos = data;
-            }
-              console.log(data);
+            $scope.todos = filterTodos(data);
           })
           .error(function(data) {
               console.log('Error: ' + data);
           });
-    });
+    }
+
+    function filterTodos(data) {
+      let result = data;
+      if ($scope.formData.filterTags) {
+        result = filterByTags(data);
+      }
+
+      if ($scope.formData.filterText) {
+        result = filterByText(result);
+      }
+
+      return result;
+
+    }
 
     function filterByTags(data) {
         let tags = $scope.formData.filterTags.trim().split(',').filter(e => e !== '');
@@ -126,6 +127,12 @@ function mainController($scope, $http) {
           return 0;
       });
       return result;
+  }
+
+  function filterByText(data) {
+    let filterText = $scope.formData.filterText;
+    let result = data.filter(item => item.text.indexOf(filterText) !== -1);
+    return result;
   }
 
 }
