@@ -15,5 +15,17 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-EXPOSE 8080
+ENV SSH_PASSWD "root:Docker!"
+RUN apt-get update \
+        && apt-get install -y --no-install-recommends dialog \
+        && apt-get update \
+  && apt-get install -y --no-install-recommends openssh-server \
+  && echo "$SSH_PASSWD" | chpasswd
+
+COPY sshd_config /etc/ssh/
+
+EXPOSE 8080 2222
+
+RUN service ssh start
+
 CMD [ "npm", "start" ]
