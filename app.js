@@ -19,7 +19,8 @@ var methodOverride = require('method-override');
 var app = express();
 
 app.locals.pretty = true;
-app.set('port', process.env.PORT || 3000); //3000 not docker 8080 docker
+app.set('port', process.env.PORT || 8080); //3000 not docker 8080 docker
+app.set('host', process.env.HOST || '0.0.0.0'); //3000 not docker 8080 docker
 app.set('views', __dirname + '/app/server/views');
 app.set('view engine', 'jade');
 app.use(cookieParser());
@@ -55,13 +56,13 @@ app.use(session({
 
 require('./app/server/routes')(app);
 
-/*const PORT = 8080;
+const PORT = 8080;
 const HOST = '0.0.0.0';
 app.listen(PORT, HOST);
-console.log("test");*/
+console.log("test");
 
 
-http.createServer(app).listen(app.get('port'), function(){
+/*http.createServer(app).listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
   console.log('server is running');
-});
+});*/
