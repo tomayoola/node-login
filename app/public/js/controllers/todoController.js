@@ -51,7 +51,11 @@ function mainController($scope, $http) {
     // when landing on the page, get all todos and show them
     $http.get('/api/todos')
         .success(function(data) {
+          if ($scope.formData.filterTags) {
+            $scope.todos = filterByTags(data);
+          } else {
             $scope.todos = data;
+          }
             console.log(data);
         })
         .error(function(data) {
@@ -65,8 +69,13 @@ function mainController($scope, $http) {
       }
         $http.post('/api/todos', $scope.formData)
             .success(function(data) {
-                $scope.formData = {}; // clear the form so our user is ready to enter another
-                $scope.todos = data;
+                $scope.formData.text = ""; // clear the form so our user is ready to enter another
+                $scope.formData.tags = "";
+                if ($scope.formData.filterTags) {
+                  $scope.todos = filterByTags(data);
+                } else {
+                  $scope.todos = data;
+                }
                 console.log(data);
             })
             .error(function(data) {
@@ -78,12 +87,45 @@ function mainController($scope, $http) {
     $scope.deleteTodo = function(id) {
         $http.delete('/api/todos/' + id)
             .success(function(data) {
+              if ($scope.formData.filterTags) {
+                $scope.todos = filterByTags(data);
+              } else {
                 $scope.todos = data;
+              }
                 console.log(data);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
             });
     };
+
+    $scope.$watch('formData.filterTags',function(){
+      console.log("changed");
+      $http.get('/api/todos')
+          .success(function(data) {
+            if ($scope.formData.filterTags) {
+              $scope.todos = filterByTags(data);
+            } else {
+              $scope.todos = data;
+            }
+              console.log(data);
+          })
+          .error(function(data) {
+              console.log('Error: ' + data);
+          });
+    });
+
+    function filterByTags(data) {
+        let tags = $scope.formData.filterTags.trim().split(',').filter(e => e !== '');
+        let result = data.filter(function(item) {
+          for (tag of tags) {
+            if (item.tags.indexOf(tag) !== -1) {
+              return 1;
+            }
+          }
+          return 0;
+      });
+      return result;
+  }
 
 }

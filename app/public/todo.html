@@ -58,6 +58,8 @@
     </div>
 
     <!-- TODO LIST -->
+    <input id="todo-filterTags" type="text" class="form-control input-lg text-center" placeholder="Filter by tag[s] (comma-separated)" ng-model="formData.filterTags">
+
     <div id="todo-list" class="row">
         <div class="col-sm-8 col-sm-offset-2 text-center">
 
@@ -173,10 +175,6 @@
       $('#todo-textbox').remove();
 
       $.post( "/api/update/"+tId+"/"+new_text, [new_text, tId]);
-
-
-
-
     }
   });
 
