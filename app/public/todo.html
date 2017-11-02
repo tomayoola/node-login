@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
 
-    <title>Node/Angular Todo App</title>
+    <title>Log Notebook</title>
 
     <!-- SCROLLS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" /><!-- load bootstrap -->
@@ -61,7 +61,7 @@
                 <div class="todo-item" ng-repeat="todo in todos">
                     <div class="list-group-item d-flex justify-content-between align-items-center">
                         <a class="list-group-item clearfix">
-                          <span class="todo-text">{{ todo.text }}</span>
+                          <span class="todo-text" style="word-wrap: break-word;">{{ todo.text }}</span>
                           <span id="todo-id" hidden=""> {{ todo._id }}</span>
                           <span id="todo-submit" hidden="" ng-click="editTodo(todo._id)"></span>
                             <span class="pull-right">
@@ -89,7 +89,7 @@
                 <div class="form-group">
 
                     <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
-                    <input type="text" class="form-control input-lg text-center" placeholder="I want to detect/capture dark matter" ng-model="formData.text">
+                    <input type="text" class="form-control input-lg text-center" placeholder="Add new log here" ng-model="formData.text">
                 </div>
 
                 <!-- createToDo() WILL CREATE NEW TODOS -->
@@ -143,8 +143,10 @@
 
       old_text = $todo.find('.todo-text').html();
       $todo.find('.todo-text').html('');
-      $todo.find('.todo-text').parent().append('<input id="todo-textbox" type="text" ng-model="update"/>');
+      $todo.find('.todo-text').parent().append('<textarea id="todo-textbox" type="text" ng-model="update" onkeyup="textAreaAdjust(this)" style="overflow:hidden; width: 607px;" wrap="hard"></textarea>');
       $('#todo-textbox').val(old_text);
+      textAreaAdjust(document.getElementById('todo-textbox'));
+
 
 
     } else {
@@ -157,20 +159,21 @@
       $todo.find('.todo-text').html(new_text);
 
       let tId = $todo.find('#todo-id').html();
-      console.log(tId);
 
       $('#todo-textbox').remove();
 
       $.post( "/api/update/"+tId+"/"+new_text, [new_text, tId]);
 
 
-      console.log($todo.find('#todo-submit'));
 
 
     }
   });
 
-
+  function textAreaAdjust(o) {
+    o.style.height = "1px";
+    o.style.height = (25+o.scrollHeight)+"px";
+  }
 </script>
 </body>
 </html>
