@@ -178,9 +178,12 @@ module.exports = function(app) {
     // create todo and send back all todos after creation
     app.post('/api/todos', function(req, res) {
       let username = req.session.user.user;
+      let tags = (req.body.tags) ? req.body.tags.trim().split(',').filter(e => e !== '') : [];
+      console.log(tags);
 
         // create a todo, information comes from AJAX request from Angular
         Todo.create({
+            tags : tags,
             text : req.body.text,
             user : username,
             date_created : Date.now(),
