@@ -6,7 +6,8 @@ var dbPort = process.env.DB_PORT || 10255;
 var crypto 		= require('crypto');
 var moment 		= require('moment');
 var mongoClient 	= require("mongodb").MongoClient;
-mongoClient.connect("mongodb://appdbo:MiTSBWUinz7Dy40Dud5zaTzrxHGkoYHCxuSD4975QryN3wsiahhpHknGKdRVzwWt6i0WeitkPEtiLO5c1JwXcQ==@appdbo.documents.azure.com:10255/?ssl=true", function (err, db) {
+
+mongoClient.connect("mongodb://13.81.108.126:12345", function (err, db) {
 
 	db.open(function(e, d){
 		if (e) {

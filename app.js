@@ -36,7 +36,7 @@ var dbPort = process.env.DB_PORT || 27017;
 var dbName = process.env.DB_NAME || 'node-login';
 
 var dbURL = 'mongodb://'+dbHost+':'+dbPort+'/'+dbName;*/
-var dbURL = 'mongodb://appdbo:MiTSBWUinz7Dy40Dud5zaTzrxHGkoYHCxuSD4975QryN3wsiahhpHknGKdRVzwWt6i0WeitkPEtiLO5c1JwXcQ==@appdbo.documents.azure.com:10255/?ssl=true';
+var dbURL = 'mongodb://13.81.108.126:12345';
 if (app.get('env') == 'live'){
 // prepend url with authentication credentials //
 	dbURL = 'mongodb://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+dbHost+':'+dbPort+'/'+dbName;

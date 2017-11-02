@@ -171,6 +171,7 @@ module.exports = function(app) {
             if (err)
                 res.send(err);
             let results = todos.filter((todo) => todo.user === username);
+            console.log(todos);
             res.json(results); // return all todos in JSON format
         });
     });
