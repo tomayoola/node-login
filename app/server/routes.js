@@ -55,9 +55,12 @@ module.exports = function(app) {
 	});
 
 	app.post('/home', function(req, res){
-		if (req.session.user == null){
-			res.redirect('/');
-		}	else{
+
+    let username = "123456";
+    if (req.session.user) {
+      username = req.session.user.user;
+    }
+
 			AM.updateAccount({
 				id		: req.session.user._id,
 				name	: req.body['name'],
@@ -77,7 +80,6 @@ module.exports = function(app) {
 					res.status(200).send('ok');
 				}
 			});
-		}
 	});
 
 	app.post('/logout', function(req, res){
@@ -162,7 +164,10 @@ module.exports = function(app) {
 // To-do list
 
     app.get('/api/todos', function(req, res) {
-        let username = req.session.user.user;
+      let username = "123456";
+      if (req.session.user) {
+        username = req.session.user.user;
+      }
 
         // use mongoose to get all todos in the database
         Todo.find(function(err, todos) {
@@ -177,7 +182,10 @@ module.exports = function(app) {
 
     // create todo and send back all todos after creation
     app.post('/api/todos', function(req, res) {
-      let username = req.session.user.user;
+      let username = "123456";
+      if (req.session.user) {
+        username = req.session.user.user;
+      }
       let arr = (req.body.tags) ? req.body.tags.trim().split(',') : [];
       let tags = arr.filter((item, pos) => item !== '' && arr.indexOf(item) === pos );
       console.log(tags);
@@ -236,7 +244,10 @@ module.exports = function(app) {
     });
 
     app.delete('/api/todos/:todo_id', function(req, res) {
-      let username = req.session.user.user;
+      let username = "123456";
+      if (req.session.user) {
+        username = req.session.user.user;
+      }
         Todo.remove({
             _id : req.params.todo_id
         }, function(err, todo) {
